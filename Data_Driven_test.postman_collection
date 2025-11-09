@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "6a80402b-c37c-4ada-a0cb-909d36153c53",
+		"name": "Data Driven test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45940214",
+		"_collection_link": "https://www.postman.com/new-team-1907/workspace/fidelitys-api-test/collection/45940214-6a80402b-c37c-4ada-a0cb-909d36153c53?action=share&source=collection_link&creator=45940214"
+	},
+	"item": [
+		{
+			"name": "Create Company",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							" let companies;\r",
+							"  let remainingCompanies = pm.collectionVariables.get(\"remainingCompanies\")\r",
+							"\r",
+							"  if(Array.isArray(remainingCompanies)){\r",
+							"    companies =remainingCompanies\r",
+							"  }else{\r",
+							"    companies = [\"Nokia\", \"Samsung\", \"Apple\", \"Huawei\", \"Xiaomi\"];\r",
+							"  }\r",
+							"  console.log(companies.length)\r",
+							"  console.log(companies)\r",
+							"     \r",
+							"\r",
+							"\r",
+							"\r",
+							"let company = companies.shift()\r",
+							"console.log(company)\r",
+							"pm.collectionVariables.set(\"company\", company);\r",
+							"\r",
+							"pm.collectionVariables.set(\"remainingCompanies\", companies);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if((pm.collectionVariables.get(\"remainingCompanies\")).length < 1){\r",
+							"    pm.execution.setNextRequest(null)\r",
+							"    pm.collectionVariables.unset(\"remainingCompanies\")\r",
+							"}else{\r",
+							"    pm.execution.setNextRequest(\"Create Company\")\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{company}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://httpbin.org/post",
+					"protocol": "https",
+					"host": [
+						"httpbin",
+						"org"
+					],
+					"path": [
+						"post"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "company",
+			"value": ""
+		}
+	]
+}
